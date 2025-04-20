@@ -1,0 +1,311 @@
+:root {
+    --clr-1: #121929;
+    --clr-2: #52555b;
+
+    --blue1: #466ddf;
+    --blue2: #5478e6;
+    --blue3: #b8dbff;
+    --blue4: #3451b4;
+
+    --body-bg: #eef1fa;
+
+    --fw-bold: 700;
+    --fw-medium: 600;
+    --fw-semi: 500;
+    --fw-normal: 400;
+}
+
+.drag-target {
+    display: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    min-width: 100%;
+
+    color: #121929;
+    padding-bottom: 2rem;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+h1 {
+    font-weight: var(--fw-bold);
+    text-align: center;
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 0;
+}
+
+h1 span {
+    color: var(--blue1);
+    margin: 0 auto;
+    display: block;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    color: var(--clr-2);
+    font-weight: var(--fw-normal);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero-link {
+    display: block;
+    margin: 0 auto;
+}
+
+.hero div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-bottom: 2.5rem;
+    align-self: center;
+    padding: 1rem 2rem;
+    border-radius: .5rem;
+    border: none;
+    background-color: var(--blue1);
+    color: white;
+    cursor: pointer;
+    width: fit-content;
+    transition: .2s ease;
+}
+
+.hero div:hover {
+    background-color: var(--blue4);
+}
+
+.hero button {
+    font-weight: var(--fw-semi);
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+
+/* Features Section */
+
+.features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 4rem;
+}
+
+.features h2 {
+    text-align: center;
+    font-weight: var(--fw-medium);
+    font-size: 2.5rem;
+}
+
+.features span {
+    color: var(--blue1);
+}
+
+/* Feature Cards */
+
+.card {
+    max-width: 350px;
+    height: 200px;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 0 0 black;
+    transition: 0.2s ease;
+    flex: 1;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: var(--fw-medium);
+    color: var(--blue1);
+    text-align: center;
+}
+
+.card p {
+    font-size: 1rem;
+    color: var(--clr-2);
+    text-align: center;
+    font-weight: var(--fw-semi);
+    margin-top: 1rem;
+    line-height: 1.5;
+}
+
+/* Review Section */
+
+.review {
+    background-color: var(--blue1);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 4rem;
+}
+
+.review h2 {
+    text-align: center;
+    font-weight: var(--fw-medium);
+    font-size: 2.5rem;
+    color: white;
+    margin: 0 0 1rem 0;
+}
+
+.review h2 span {
+    color: var(--body-bg);
+}
+
+.review p {
+    font-size: 1.25rem;
+    color: var(--body-bg);
+    font-weight: var(--fw-normal);
+    text-align: center;
+}
+
+.stats>h4 {
+    background-color: var(--blue2);
+    padding: 2rem;
+    border-radius: .5rem;
+    color: white;
+    font-weight: var(--fw-medium);
+    text-align: center;
+    font-size: 2.5rem;
+    flex: 1;
+}
+
+.stats>h4 span {
+    display: block;
+    font-weight: var(--fw-normal);
+    font-size: 1.25rem;
+}
+
+/* Steps */
+
+.steps header h2 {
+    text-align: center;
+    font-weight: var(--fw-medium);
+    font-size: 2.5rem;
+    margin: 0 0 .5rem 0;
+}
+
+.steps header span {
+    color: var(--blue1);
+}
+
+.steps header p {
+    font-size: 1.25rem;
+    color: var(--clr-2);
+    font-weight: var(--fw-normal);
+    text-align: center;
+}
+
+
+.all-steps,
+.step {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    flex: 1;
+}
+
+.all-steps {
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.step span {
+    font-size: 3.5rem;
+    background: var(--blue1);
+    padding: 1rem;
+    border-radius: 1rem;
+    color: white;
+}
+
+.step h4 {
+    font-weight: var(--fw-bold);
+    color: var(--clr-1);
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.step p {
+    color: var(--clr-2);
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+
+    .hero {
+        gap: 1.5rem;
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    .hero p {
+        font-size: 2rem;
+    }
+
+    .hero button {
+        font-size: 1.75rem;
+    }
+
+    .feature {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .features h2 {
+        font-size: 3rem;
+    }
+
+    .review h2 {
+        font-size: 3rem;
+        width: 600px;
+        margin: 0 auto;
+    }
+
+    .review p {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .steps header h2 {
+        font-size: 3rem;
+    }
+
+    .steps header p {
+        font-size: 1.5rem;
+    }
+
+    .stats {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .all-steps {
+        flex-direction: row;
+        align-items: baseline;
+    }
+}
