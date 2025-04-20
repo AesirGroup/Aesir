@@ -1,0 +1,135 @@
+{% extends 'base.html' %} {% block title %} Manage Inventory {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='inventory.css') }}" />
+{% endblock %} {% block content %}
+<header>
+  <span class="material-symbols-outlined">chef_hat</span>
+  <h1>Add Ingredient</h1>
+  <p>Manage your recipe ingredients</p>
+</header>
+
+<div class="enter-ing-section">
+  <form action="/inventory/add" method="POST" id="add-ing">
+    <div class="ing-input">
+      <div class="input-field">
+        <label for="add_name">Name</label>
+        <input type="text" id="add_name" name="add_name" class="autocomplete" placeholder="E.g. Cheese">
+      </div>
+
+      <div class="input-field">
+        <label for="add_quantity">Quantity</label>
+        <input type="number" step="0.1" id="add_quantity" name="add_quantity" class="validate" placeholder="E.g. 500" />
+      </div>
+      <div class="input-field">
+        <label for="add_unit">Unit</label>
+        <input type="text" id="add_unit" name="add_unit" class="validate" placeholder="E.g. slices" />
+      </div>
+
+    </div>
+    <button class="btn waves-effect waves-light" type="submit" name="action">
+      <p>Add Ingredient</p>
+      <span class="material-symbols-outlined">add</span>
+    </button>
+
+  </form>
+</div>
+<div class="ing-section">
+  <h2>Current Inventory</h2>
+  <div class="ing-container">
+    {% for item in inventory_items %}
+    <div class="ingredient-item">
+      <div>
+        <span class="ingredient-name">{{ item.ingredient.name }}</span>
+        <div class="ingredient-details">{{ item.quantity }} {{ item.unit }}</div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn edit modal-trigger" data-target="edit_modal_{{ item.ingredient.name }}">
+          <span class="material-symbols-outlined">edit_square</span>
+        </button>
+        <button class="btn delete modal-trigger" data-target="delete_modal_{{ item.ingredient.name }}">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit_modal_{{ item.ingredient.name }}" class="modal edit-modal">
+      <div class="modal-content">
+        <h5>Edit Ingredient</h5>
+        <form action="/inventory/edit" method="POST">
+          <input type="hidden" name="inventory_id" value="{{ item.id }}" />
+          <input type="hidden" name="inventory_name" value="{{ item.ingredient.name }}" />
+          <div>
+            <label for="edit_name_{{ item.ingredient.name }}">Ingredient Name</label>
+            <input id="edit_name_{{ item.ingredient.name }}" type="text" name="name"
+              value="{{ item.ingredient.name }}" disabled/>
+          </div>
+          <div>
+            <label for="edit_quantity_{{ item.ingredient.name }}">Quantity</label>
+            <input id="edit_quantity_{{ item.ingredient.name }}" type="number" step="0.1" name="quantity"
+              value="{{ item.quantity }}" />
+          </div>
+          <div>
+            <label for="edit_unit_{{ item.ingredient.name }}">Unit</label>
+            <input id="edit_unit_{{ item.ingredient.name }}" type="text" name="unit" value="{{ item.unit }}" />
+          </div>
+          <div class="modal-btn">
+            <button type="button" class="btn cancel modal-close">Cancel</button>
+            <button class="btn save" type="submit">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div id="delete_modal_{{ item.ingredient.name }}" class="modal delete-modal">
+      <div class="modal-content">
+        <h5>Delete Ingredient</h5>
+        <p>Are you sure you want to delete <strong>{{ item.ingredient.name }}</strong>? This action cannot be undone.
+        </p>
+
+        <!-- Added the form action -->
+        <form action="/inventory/delete" method="POST">
+          <input type="hidden" name="delete_inventory_id" value="{{ item.id }}">
+
+          <!-- Buttons inside the form -->
+          <div class="modal-btn">
+            <button type="button" class="btn cancel modal-close">Cancel</button>
+            <button class="btn delete-confirm" type="submit">Yes, Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Pass the ingredients array from Jinja to JavaScript
+  const ingredients_list = {{ ingredients_json| tojson }};
+
+  // Transform the ingredients into the required format for Materialize Autocomplete
+  const ing_names = {};
+  ingredients_list.forEach(ingredient => {
+    ing_names[ingredient.name.trim()] = null; // Key is the name, value is null (no image)
+  });
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.autocomplete');
+    var instances = M.Autocomplete.init(elems, {
+      data: ing_names,
+      limit: 5, // The max amount of results that can be shown at once. Default: Infinity.
+      minLength: 1 // The minimum length of input, before the autocomplete starts. Default: 1.
+    });
+  });
+
+  document.getElementById('add-ing').addEventListener('submit', function (event) {
+    const nameInput = document.getElementById('add_name');
+    nameInput.value = nameInput.value.trim(); // Trim whitespace from the input value
+  });
+
+</script>
+{% endblock %}

@@ -1,13 +1,102 @@
-{% extends "layout.html" %}
-{% block title %}Flask MVC App{% endblock %}
-{% block page %}Flask MVC App{% endblock %}
+{% extends 'base.html' %}
 
-{{ super() }}
+{% block title %}
+Home
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+{% endblock %}
 
 {% block content %}
-    <h1>Flask MVC</h1>
-    {% if is_authenticated %}
-        <p> Welcome {{current_user.username}} </p>
-    {% endif %}
-    <p>This is a boileplate flask application which follows the MVC pattern for structuring the project.</p>
+<main>
+    <section class="hero">
+        <h1>Your Personal <span>Kitchen Assistant</span></h1>
+        <p>Transform your cooking experince with smart recipe management and inventory tracking</p>
+        {% if is_authenticated %}
+        <a href="{{ url_for('inventory_views.inventory_page') }}" class="hero-link">
+            <div>
+                <button>Get Started</button>
+                <span class="material-symbols-outlined"> arrow_forward </span>
+            </div>
+        </a>
+        {% else %}
+        <a href="{{ url_for('auth_views.login_page') }}" class="hero-link">
+            <div>
+                <button>Get Started</button>
+                <span class="material-symbols-outlined"> arrow_forward </span>
+            </div>
+        </a>
+        {% endif %}
+    </section>
+
+    <section class="features">
+        <header>
+            <h2>Everything You Need for <span>Better Cooking</span></h2>
+        </header>
+        <div class="feature">
+            <div class="card">
+                <h3>Ingredient Organizer</h3>
+                <p>
+                    Effortlessly track your pantry inventory with smart tools. Add, edit, or remove ingredients and
+                    always stay
+                    organized in the kitchen.
+                </p>
+            </div>
+            <div class="card">
+                <h3>Recipe Collection</h3>
+                <p>
+                    Build a well-organized digital cookbook. Categorize, search, and save recipes with simplicity and
+                    ease for
+                    quick
+                    access whenever you're cooking.
+                </p>
+            </div>
+            <div class="card">
+                <h3>Recipe Planning</h3>
+                <p>
+                    Add, edit, and manage recipes with ease. View your recipes and see which ingredients are missing,
+                    making meal
+                    preparation stress-free.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="review">
+        <header>
+            <h2>Celebrated by Cooks <span>Across the Globe</span></h2>
+            <p>Join our growing community of food enthusiasts</p>
+        </header>
+        <div class="stats">
+            <h4>10,000+<span>Active Users</span></h4>
+            <h4>50,000+<span>Recipies Created</span></h4>
+            <h4>100,000<span>Ingredients Added</span></h4>
+        </div>
+    </section>
+
+    <section class="steps">
+        <header>
+            <h2>Start Cooking in <span>Three Easy Steps</span></h2>
+            <p>Get started with Aesir in minutes</p>
+        </header>
+        <div class="all-steps">
+            <div class="step">
+                <span class="material-symbols-outlined">group</span>
+                <h4>Create Account</h4>
+                <p>Sign up and customize you kitchen profile</p>
+            </div>
+            <div class="step">
+                <span class="material-symbols-outlined">package_2</span>
+                <h4>Add Inventory</h4>
+                <p>Input your ingredients and track your pantry</p>
+            </div>
+            <div class="step">
+                <span class="material-symbols-outlined">chef_hat</span>
+                <h4>Start Cooking</h4>
+                <p>Explore recipes and start cooking delicious meals.</p>
+            </div>
+        </div>
+    </section>
+</main>
 {% endblock %}
