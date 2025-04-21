@@ -15,7 +15,6 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
     set_access_cookies,
 )
-from App.views.forms import RegisterForm, LoginForm
 
 from .index_views import index_views
 
