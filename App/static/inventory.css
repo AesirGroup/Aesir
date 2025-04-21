@@ -295,7 +295,7 @@ h2 {
 
 .delete-modal .modal-btn .btn {
     font-weight: var(--fw-medium);
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 4px;
     cursor: pointer;
     border: none;
@@ -321,18 +321,23 @@ h2 {
 
 
 @media (max-width: 480px) {
-    .modal-content {
-        padding: 15px;
+    
+    .delete-modal .modal-btn {
+        justify-content: center;
+
+        button {
+            width: 100px;
+            justify-content: center;
+        }   
     }
 
-    .modal-btn {
-        flex-direction: column;
-        align-items: stretch;
-    }
+    .edit-modal .modal-btn {
+        justify-content: center;
 
-    .modal-btn .btn {
-        width: 100%;
-        margin: 5px 0;
+        button {
+            width: 100px;
+            justify-content: center;
+        } 
     }
 }
 
