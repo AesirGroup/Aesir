@@ -5,10 +5,10 @@ services:
   env: python
   repo: https://github.com/AesirGroup/Aesir.git
   plan: free
-  branch: main
-  healthCheckPath: /healthcheck
+  branch: kd-branch
+  healthCheckPath: /health
   buildCommand: "pip install -r requirements.txt"
-  startCommand: "flask init && gunicorn wsgi:app"
+  startCommand: "gunicorn wsgi:app"
   envVars:
   - fromGroup: flask-postgres-api-settings
   - key: POSTGRES_URL
