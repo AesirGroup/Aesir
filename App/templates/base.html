@@ -40,8 +40,6 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <div class="nav-items">
                     <li><a href="{{ url_for('inventory_views.inventory_page') }}">Manage Inventory</a></li>
-                    <li><a href="{{ url_for('recipe_views.add_recipe_page') }}">Add Recipe</a></li>
-                    <li><a href="{{ url_for('recipe_views.recipes_page') }}">Manage Recipes</a></li>
                 </div>
                 <div class="user-logout">
                     <li id="username">{{ current_user.username }}</li>
@@ -53,18 +51,6 @@
                     <a href="{{ url_for('inventory_views.inventory_page') }}">
                         <span class="material-symbols-outlined">inventory_2</span>
                         <p>Manage Inventory</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('recipe_views.add_recipe_page') }}">
-                        <span class="material-symbols-outlined">note_add</span>
-                        <p>Add Recipe</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('recipe_views.recipes_page') }}">
-                        <span class="material-symbols-outlined">menu_book</span>
-                        <p>Manage Recipes</p>
                     </a>
                 </li>
                 <li>

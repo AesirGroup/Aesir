@@ -4,7 +4,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.models import User
-from App.models import Recipe, Ingredient
+from App.models import Ingredient
 from App.main import create_app
 from App.controllers import (
     create_user,
@@ -72,12 +72,12 @@ def get_user_command(username):
 app.cli.add_command(user_cli)  # add the group to the cli
 
 
-
 """
 Test Commands
 """
 
-test = AppGroup('test', help='Testing commands')
+test = AppGroup("test", help="Testing commands")
+
 
 @test.command("user", help="Run User tests")
 @click.argument("type", default="all")

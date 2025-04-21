@@ -1,9 +1,9 @@
 import json
 import os
 from .user import create_user
-from .recipe import create_recipe
 from .ingredient import create_ingredient
 from App.database import db
+
 
 def initialize():
     db.drop_all()
