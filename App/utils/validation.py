@@ -26,7 +26,7 @@ def validate_username(username, min_length=3, max_length=20):
     return True, None
 
 
-def validate_password(password, min_length=8, max_length=64):
+def validate_password(password, min_length=7, max_length=64):
     if not password or len(password) < min_length or len(password) > max_length:
         return (
             False,
