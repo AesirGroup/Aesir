@@ -44,6 +44,8 @@ def load_config(app, overrides):
     app.config["JWT_COOKIE_CSRF_PROTECT"] = False  # Disable CSRF protection for simplicity
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
 
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
     # Apply any overrides passed as arguments
     for key in overrides:
         app.config[key] = overrides[key]
