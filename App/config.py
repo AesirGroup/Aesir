@@ -20,7 +20,7 @@
 #     app.config["JWT_COOKIE_CSRF_PROTECT"] = False  # Disable CSRF protection for JWT cookies in this setup
 #     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
 
-    import os
+import os
 
 def load_config(app, overrides):
     if os.path.exists(os.path.join('./App', 'custom_config.py')):
