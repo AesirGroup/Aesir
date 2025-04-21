@@ -4,6 +4,8 @@ from App.models import RecipeIngredient
 from App.database import db
 from App.utils.validation import validate_name, validate_quantity
 from .ingredient import get_ingredient_by_name
+from sqlalchemy.sql import func, and_
+from App.models import Inventory 
 
 
 # CREATE
@@ -114,32 +116,60 @@ def delete_recipe(user, recipe_id):
 
 
 def filter_recipes(user, filter_selection):
-    possible_recipes = []
-    impossible_recipes = []
 
-    for recipe in user.recipes:
-        can_make = True
-        for assoc in recipe.ingredients:
-            ingredient = assoc.ingredient
-            owned_ingredient = next(
-                (ing for ing in user.inventory_items if ing.ingredient_id == ingredient.id), None
-            )
-            if (
-                not owned_ingredient
-                or owned_ingredient.quantity < assoc.quantity
-            ):
-                can_make = False
-                break
-        if can_make:
-            possible_recipes.append(recipe)
-        else:
-            impossible_recipes.append(recipe)
-
+    # Query to find recipes where all required ingredients are available in sufficient quantity
     if filter_selection == "Possible":
+        possible_recipes = (
+            Recipe.query.join(RecipeIngredient, Recipe.id == RecipeIngredient.recipe_id)
+            .outerjoin(
+                Inventory,  # Join with the Inventory table
+                and_(
+                    Inventory.user_id == user.id,
+                    Inventory.ingredient_id == RecipeIngredient.ingredient_id,
+                ),
+            )
+            .group_by(Recipe.id)
+            .having(
+                func.count(RecipeIngredient.id)
+                == func.sum(
+                    and_(
+                        Inventory.quantity >= RecipeIngredient.quantity,
+                        Inventory.quantity.isnot(None),
+                    )
+                )
+            )
+            .all()
+        )
         return possible_recipes
+
+    # Query to find recipes where some ingredients are missing or insufficient
     elif filter_selection == "Missing Ingredients":
+        impossible_recipes = (
+            Recipe.query.join(RecipeIngredient, Recipe.id == RecipeIngredient.recipe_id)
+            .outerjoin(
+                Inventory,  # Join with the Inventory table
+                and_(
+                    Inventory.user_id == user.id,
+                    Inventory.ingredient_id == RecipeIngredient.ingredient_id,
+                ),
+            )
+            .group_by(Recipe.id)
+            .having(
+                func.count(RecipeIngredient.id)
+                != func.sum(
+                    and_(
+                        Inventory.quantity >= RecipeIngredient.quantity,
+                        Inventory.quantity.isnot(None),
+                    )
+                )
+            )
+            .all()
+        )
         return impossible_recipes
+
+    # Return all recipes if "All" is selected
     elif filter_selection == "All":
         return get_all_recipes(user)
-    else:
-        return []
+
+    # Return an empty list for invalid filter selections
+    return []
