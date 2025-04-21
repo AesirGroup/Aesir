@@ -23,7 +23,7 @@ from App.controllers.recipe import (
 
 from App.controllers.ingredient import get_all_ingredients, get_ingredient_by_name
 
-from App.utils.validation import validate_name, validate_quantity, validate_unit
+from App.utils.validation import validate_name, validate_quantity, validate_unit, validate_description
 
 recipe_views = Blueprint("recipe_views", __name__, template_folder="../templates")
 
@@ -49,6 +49,12 @@ def add_recipe():
 
     # Validate recipe name
     is_valid, error = validate_name(recipe_name, max_length=100)
+    if not is_valid:
+        flash(error, "error")
+        return redirect(url_for("recipe_views.add_recipe_page"))
+    
+    # Validate recipe description
+    is_valid, error = validate_description(recipe_description, max_length=4000)
     if not is_valid:
         flash(error, "error")
         return redirect(url_for("recipe_views.add_recipe_page"))
@@ -81,7 +87,6 @@ def add_recipe():
             {"ingredient_name": name, "quantity": quantity, "unit": unit}
         )
 
-    print(ingredient_data_list)  # Debugging
 
     recipe = create_recipe(
         current_user.id, recipe_name, recipe_description, ingredient_data_list
@@ -126,6 +131,18 @@ def edit_recipe():
     recipe_ingredients = request.form.getlist("ingredient_names[]")
     recipe_quantities = request.form.getlist("ingredient_quantities[]")
     recipe_units = request.form.getlist("ingredient_units[]")
+
+    # Validate recipe name
+    is_valid, error = validate_name(recipe_name, max_length=100)
+    if not is_valid:
+        flash(error, "error")
+        return redirect(url_for("recipe_views.recipes_page"))
+    
+    # Validate recipe description
+    is_valid, error = validate_description(recipe_description, max_length=4000)
+    if not is_valid:
+        flash(error, "error")
+        return redirect(url_for("recipe_views.recipes_page"))
 
     ingredient_data_list = []
     for name, quantity, unit in zip(recipe_ingredients, recipe_quantities, recipe_units):

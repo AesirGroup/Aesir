@@ -60,3 +60,9 @@ def validate_unit(unit, max_length=20):
     if not unit or len(unit) > max_length:
         return False, f"Unit must be between 1 and {max_length} characters."
     return True, None
+
+
+def validate_description(description, max_length=4000):
+    if not description or len(description) > max_length:
+        return False, f"Description must be between 1 and {max_length} characters."
+    return True, None

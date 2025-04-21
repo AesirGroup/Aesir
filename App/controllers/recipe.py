@@ -67,8 +67,8 @@ def update_recipe(
 
     # Validate description if provided
     if description is not None:
-        if len(description) > 500:
-            raise ValueError("Description must be 500 characters or fewer.")
+        if len(description) > 4000:
+            raise ValueError("Description must be 4000 characters or fewer.")
         recipe.description = description
 
     # Validate and update ingredients if provided
