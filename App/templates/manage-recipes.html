@@ -21,7 +21,8 @@
                 <option value="" disabled {% if not selected_filter %}selected{% endif %}>Filter Recipes By</option>
                 <option value="All" {% if selected_filter=="All" %}selected{% endif %}>All</option>
                 <option value="Possible" {% if selected_filter=="Possible" %}selected{% endif %}>Possible</option>
-                <option value="Missing Ingredients" {% if selected_filter=="Missing Ingredients" %}selected{% endif %}>Missing Ingredients</option>
+                <option value="Missing Ingredients" {% if selected_filter=="Missing Ingredients" %}selected{% endif %}>
+                    Missing Ingredients</option>
             </select>
             <label></label>
         </div>
@@ -37,10 +38,10 @@
             </h5>
             <div class="action-buttons">
                 <a href="#edit-modal-{{ recipe.name }}" class="modal-trigger waves-effect waves-light btn">
-                    <span class="material-symbols-outlined"> edit_square</span> 
+                    <span class="material-symbols-outlined"> edit_square</span>
                 </a>
                 <a href="#delete-modal-{{ recipe.name }}" class="modal-trigger waves-effect waves-light btn">
-                    <span class="material-symbols-outlined"> delete </span> 
+                    <span class="material-symbols-outlined"> delete </span>
                 </a>
             </div>
         </div>
@@ -53,7 +54,7 @@
                     <div class="row header">
                         <h1 class="center-align">{{ recipe.name }}</h1>
                     </div>
-    
+
                     <!-- Recipe Description -->
                     <div class="row rec-description">
                         <div>
@@ -61,7 +62,7 @@
                             <p>{{ recipe.description }}</p>
                         </div>
                     </div>
-        
+
                     <!-- Ingredients Section -->
                     <div class="row rec-ing">
                         <h4>Ingredients</h4>
@@ -69,12 +70,13 @@
                             {% for recipe_ingredient in recipe.ingredients %}
                             <li class="ingredient-item">
                                 <span class="ingredient-name">{{ recipe_ingredient.ingredient.name }}</span>
-                                <span class="ingredient-quantity">{{ recipe_ingredient.quantity }} {{ recipe_ingredient.unit }}</span>
+                                <span class="ingredient-quantity">{{ recipe_ingredient.quantity }} {{
+                                    recipe_ingredient.unit }}</span>
                             </li>
                             {% endfor %}
                         </ul>
                     </div>
-        
+
                     <!-- Footer -->
                     <div class="modal-footer">
                         <a href="" class="modal-close waves-effect waves-green btn-flat">Close</a>
@@ -86,11 +88,11 @@
         <!-- Edit Modal -->
         <div id="edit-modal-{{ recipe.name }}" class="modal edit-modal">
             <div class="modal-content">
-                
+
                 <div class="row body">
                     <div class="row header">
-                    <h1 class="center-align">Edit a Recipe</h1>
-                </div>
+                        <h1 class="center-align">Edit a Recipe</h1>
+                    </div>
                     <form action="/manage-recipes/edit" method="POST" class="col s12" novalidate>
                         <input type="hidden" name="recipe_id" value="{{ recipe.id }}" />
 
@@ -132,16 +134,19 @@
                                         name="ingredient-quantity-{{ recipe.id }}" class="validate" />
                                     <label for="ingredient-quantity-{{ recipe.id }}">Quantity</label>
                                 </div>
+
                                 <div class="input-field">
-                                    <input id="ingredient-unit-{{ recipe.id }}" type="text" name="ingredient-unit-{{ recipe.id }}" class="validate" />
+                                    <input id="ingredient-unit-{{ recipe.id }}" type="text"
+                                        name="ingredient-unit-{{ recipe.id }}" class="validate" />
                                     <label for="ingredient-unit-{{ recipe.id }}">Unit</label>
                                 </div>
                                 <div class="unit-add">
                                     <a class="waves-effect waves-light btn add-ingredient-btn"
                                         data-recipe-id="{{ recipe.id }}">
-                                        <span class="material-symbols-outlined"> add </span>
+                                        Add Ingredient<span class="material-symbols-outlined"> add </span>
                                     </a>
                                 </div>
+
                             </div>
                         </div>
                         <div class="row rec-ing">
@@ -166,15 +171,17 @@
                                                 <input id="ing-{{ recipe_ingredient.ingredient.name }}" type="number"
                                                     step="0.1" name="ingredient_quantities[]"
                                                     value="{{ recipe_ingredient.quantity }}" />
-                                                <label class="active" for="ing-{{ recipe_ingredient.ingredient.name }}">Edit
+                                                <label class="active"
+                                                    for="ing-{{ recipe_ingredient.ingredient.name }}">Edit
                                                     Quantity</label>
                                             </div>
                                             <div class="unit">
                                                 <div class="input-field">
-                                                    <input id="ing-unit-{{ recipe_ingredient.ingredient.name }}" type="text"
-                                                        name="ingredient_units[]"
+                                                    <input id="ing-unit-{{ recipe_ingredient.ingredient.name }}"
+                                                        type="text" name="ingredient_units[]"
                                                         value="{{ recipe_ingredient.unit }}" />
-                                                    <label class="active" for="ing-unit-{{ recipe_ingredient.ingredient.name }}">Edit
+                                                    <label class="active"
+                                                        for="ing-unit-{{ recipe_ingredient.ingredient.name }}">Edit
                                                         Unit</label>
                                                 </div>
                                                 <div class="unit-del">
@@ -218,7 +225,7 @@
 
                     <div class="modal-btn">
                         <button type="button" class="btn cancel modal-close">Cancel</button>
-                        <button type="submit" class="btn delete-confirm" >Yes, Delete</button>
+                        <button type="submit" class="btn delete-confirm">Yes, Delete</button>
                     </div>
                 </form>
             </div>
@@ -243,23 +250,24 @@
         // Initialize all Materialize modals
 
         // Initialize Materialize Autocomplete for all autocomplete inputs
-        const ingredients_list = {{ ingredients_json|tojson }};
-        const ing_names = {};
-        ingredients_list.forEach(ingredient => {
+        const ingredients_list = {{ ingredients_json| tojson
+    }};
+    const ing_names = {};
+    ingredients_list.forEach(ingredient => {
         ing_names[ingredient.name] = null; // Key is the name, value is null (no image)
     });
 
-        document.querySelectorAll('.autocomplete').forEach(input => {
-            M.Autocomplete.init(input, {
-                data: ing_names,
-                limit: 5,
-                minLength: 1
-            });
+    document.querySelectorAll('.autocomplete').forEach(input => {
+        M.Autocomplete.init(input, {
+            data: ing_names,
+            limit: 5,
+            minLength: 1
         });
+    });
 
-        // Add ingredient button functionality for each recipe
-        document.querySelectorAll('.add-ingredient-btn').forEach(button => {
-    button.addEventListener('click', function () {
+    // Add ingredient button functionality for each recipe
+    document.querySelectorAll('.add-ingredient-btn').forEach(button => {
+        button.addEventListener('click', function () {
             const recipeId = button.getAttribute('data-recipe-id');
             const ingredientInput = document.querySelector(`#autocomplete-input-${recipeId}`);
             const quantityInput = document.querySelector(`#ingredient-quantity-${recipeId}`);
@@ -315,8 +323,8 @@
         });
     });
 
-        // Remove ingredient functionality
-        document.querySelectorAll('.ingredient-list').forEach(list => {
+    // Remove ingredient functionality
+    document.querySelectorAll('.ingredient-list').forEach(list => {
         list.addEventListener('click', function (e) {
             const ingToRemove = e.target.closest('.delete-ingredient');
             if (ingToRemove) {
