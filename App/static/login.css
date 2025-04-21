@@ -26,6 +26,10 @@
     position: static;
 }
 
+h1 {
+    margin-bottom: 0;
+}
+
 .row .input-field input {
     box-sizing: border-box;
     border-bottom: none;
@@ -63,6 +67,30 @@
     max-width: 450px;
     margin: 0 auto;
     padding: 0.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form .row {
+    margin: 0;
+}
+
+form .row:last-child {
+    display: flex;
+    justify-content: center;
+}
+
+.row button {
+    background-color: var(--blue1);
+    font-weight: bold;
+    width: 200px;
+}
+
+.row button:hover {
+    background-color: var(--blue4);
 }
 
 @media (min-width: 425px) {
