@@ -20,6 +20,12 @@ from .index_views import index_views
 
 from App.controllers import login, register
 
+from App.utils.validation import (
+    validate_username,
+    validate_password,
+    compare_passwords,
+)
+
 auth_views = Blueprint("auth_views", __name__, template_folder="../templates")
 
 
@@ -30,12 +36,27 @@ Page/Action Routes
 
 @auth_views.route("/login", methods=["GET", "POST"])
 def login_page():
+    errorsDict = {
+        "username_error": None,
+        "password_error": None,
+    }
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        if username == "" or password == "":
-            flash("Please enter both username and password.", category="error")
-            return render_template("login.html", title="Login")
+
+        # Validate inputs
+        is_valid, error = validate_username(username)
+        if not is_valid:
+            errorsDict["username_error"] = error
+        is_valid, error = validate_password(password)
+        if not is_valid:
+            errorsDict["password_error"] = error
+
+        if any(errorsDict.values()):
+            return render_template("login.html", title="Login", errorsDict=errorsDict)
+
+        # Proceed with login if no errors
         token = login(username, password)
         if token:
             response = redirect(url_for("index_views.index_page"))
@@ -44,25 +65,53 @@ def login_page():
             return response
         else:
             flash("Invalid login credentials. Please try again.", category="error")
-    return render_template("login.html", title="Login")
+    return render_template("login.html", title="Login", errorsDict=errorsDict)
 
 
 @auth_views.route("/register", methods=["GET", "POST"])
 def register_page():
+    errorsDict = {
+        "username_error": None,
+        "password1_error": None,
+        "password2_error": None,
+    }
+
     if request.method == "POST":
         username = request.form.get("username")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
-        if password1 != password2:
-            flash("Passwords do not match. Please try again.", category="error")
-            return render_template("register.html", title="Register")
+
+        # Validate inputs
+        is_valid, error = validate_username(username)
+        if not is_valid:
+            errorsDict["username_error"] = error
+
+        is_valid, error = validate_password(password1)
+        if not is_valid:
+            errorsDict["password1_error"] = error
+
+        is_valid, error = validate_password(password2)
+        if not is_valid:
+            errorsDict["password2_error"] = error
+
+        is_valid, error = compare_passwords(password1, password2)
+        if not is_valid:
+            errorsDict["password2_error"] = error
+
+        if any(errorsDict.values()):
+            return render_template(
+                "register.html", title="Register", errorsDict=errorsDict
+            )
+
+        # Proceed with registration if no errors
         user = register(username, password1)
         if user:
             flash("Registration Successful", category="success")
             return redirect(url_for("auth_views.login_page"))
         else:
             flash("Registration failed. Please try again.", category="error")
-    return render_template("register.html", title="Register")
+
+    return render_template("register.html", title="Register", errorsDict=errorsDict)
 
 
 @auth_views.route("/logout", methods=["GET"])
@@ -71,29 +120,3 @@ def logout_action():
     flash("Logged Out!")
     unset_jwt_cookies(response)
     return response
-
-
-"""
-API Routes
-"""
-
-# @auth_views.route('/api/login', methods=['POST'])
-# def user_login_api():
-#   data = request.json
-#   token = login(data['username'], data['password'])
-#   if not token:
-#     return jsonify(message='bad username or password given'), 401
-#   response = jsonify(access_token=token)
-#   set_access_cookies(response, token)
-#   return response
-
-# @auth_views.route('/api/identify', methods=['GET'])
-# @jwt_required()
-# def identify_user():
-#     return jsonify({'message': f"username: {current_user.username}, id : {current_user.id}"})
-
-# @auth_views.route('/api/logout', methods=['GET'])
-# def logout_api():
-#     response = jsonify(message="Logged Out!")
-#     unset_jwt_cookies(response)
-#     return response
