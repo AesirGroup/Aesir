@@ -31,10 +31,12 @@ Page/Action Routes
 
 @auth_views.route("/login", methods=["GET", "POST"])
 def login_page():
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        username = login_form.username.data
-        password = login_form.password.data
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        if username == "" or password == "":
+            flash("Please enter both username and password.", category="error")
+            return render_template("login.html", title="Login")
         token = login(username, password)
         if token:
             response = redirect(url_for("index_views.index_page"))
@@ -43,24 +45,25 @@ def login_page():
             return response
         else:
             flash("Invalid login credentials. Please try again.", category="error")
-    return render_template("login.html", title="Login", login_form=login_form)
+    return render_template("login.html", title="Login")
 
 
 @auth_views.route("/register", methods=["GET", "POST"])
 def register_page():
-    register_form = RegisterForm()
-    if register_form.validate_on_submit():
-        username = register_form.username.data
-        password = register_form.password1.data
-        user = register(username, password)
+    if request.method == "POST":
+        username = request.form.get("username")
+        password1 = request.form.get("password1")
+        password2 = request.form.get("password2")
+        if password1 != password2:
+            flash("Passwords do not match. Please try again.", category="error")
+            return render_template("register.html", title="Register")
+        user = register(username, password1)
         if user:
-            flash("Registration Successful")
+            flash("Registration Successful", category="success")
             return redirect(url_for("auth_views.login_page"))
         else:
-            flash("Registration failed. Please try again.")
-    return render_template(
-        "register.html", title="Register", register_form=register_form
-    )
+            flash("Registration failed. Please try again.", category="error")
+    return render_template("register.html", title="Register")
 
 
 @auth_views.route("/logout", methods=["GET"])

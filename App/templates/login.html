@@ -1,32 +1,28 @@
-{% extends 'base.html' %} 
-{% block title %} Login {% endblock %} 
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}" />
-{% endblock %} 
+{% endblock %}
 
 {% block content %}
 <h1>Welcome Back</h1>
 <div class="form-container row">
-  <form action="" method="POST" novalidate>
-    {{ login_form.hidden_tag() }}
+  <form action="/login" method="POST" novalidate>
     <div class="row">
-      <div class="input-field username-box">
-        {{ login_form.username.label() }} {{ login_form.username(placeholder="Enter your username") }} {% for error in
-        login_form.username.errors %}
-        <span style="color: red">{{ error }}</span>
-        {% endfor %}
+      <div class="input-field col s12">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="Enter your username" required />
       </div>
     </div>
     <div class="row">
-      <div class="input-field password-box">
-        {{ login_form.password.label() }} {{ login_form.password(placeholder="Enter your password") }} {% for error in
-        login_form.password.errors %}
-        <span style="color: red">{{ error }}</span>
-        {% endfor %}
+      <div class="input-field col s12">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Enter your password" required />
       </div>
     </div>
-    <div class="login-btn">{{ login_form.submit(class="btn waves-effect waves-light") }}</div>
+    <div class="row">
+      <button type="submit" class="btn waves-effect waves-light">Log in</button>
+    </div>
   </form>
 </div>
-
 {% endblock %}
