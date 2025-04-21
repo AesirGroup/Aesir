@@ -191,3 +191,6 @@ If you are running into errors in gitpod when updateding your github actions fil
 ## Database Issues
 
 If you are adding models you may need to migrate the database with the commands given in the previous database migration section. Alternateively you can delete you database file.
+
+Render Site URL: https://aesir.onrender.com/
+Database: postgresql://aesirdb_ku0c_user:EXwizX9u2RefGgPyXkuduIXZUJMCmahR@dpg-d0306i3uibrs73ba284g-a.oregon-postgres.render.com/aesirdb_ku0c
